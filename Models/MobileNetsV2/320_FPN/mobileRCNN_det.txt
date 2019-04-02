@@ -1,0 +1,22 @@
+ROIALIGN det_roialign resolution: 7 7 channels: 128 sampling_ratio: 2
+	input from 0
+RESHAPE det_reshape out: 1 1 6272
+	input from 1: previous
+INNERPRODUCT det_fc6 size: 1 1 6272 1024 hasBias: 1 stride: 1 1 pad: 0 0 0 0 newShape: 0 0 0 0 
+	input from 1: previous
+RELU det_relu6
+	input from 1: previous
+INNERPRODUCT det_fc7 size: 1 1 1024 1024 hasBias: 1 stride: 1 1 pad: 0 0 0 0 newShape: 0 0 0 0 
+	input from 1: previous
+RELU det_relu7
+	input from 1: previous
+INNERPRODUCT det_cls_score size: 1 1 1024 81 hasBias: 1 stride: 1 1 pad: 0 0 0 0 newShape: 0 0 0 0 
+	input from 1: det_relu7
+INNERPRODUCT det_bbox_pred size: 1 1 1024 324 hasBias: 1 stride: 1 1 pad: 0 0 0 0 newShape: 0 0 0 0 
+	input from 1: det_relu7
+SOFTMAX det_sm_cls_score
+	input from 1: det_cls_score
+COPYOUTPUT det_copy_cls_score
+	input from 1: det_sm_cls_score
+COPYOUTPUT det_copy_bbox_pred
+	input from 1: det_bbox_pred

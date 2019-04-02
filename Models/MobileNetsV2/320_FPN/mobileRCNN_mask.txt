@@ -1,0 +1,28 @@
+ROIALIGN mask_roialign resolution: 14 14 channels: 128 sampling_ratio: 2
+	input from 0
+CONV mask_fcn1 size: 3 3 128 256 hasBias: 1 stride: 1 1 pad: 1 1 1 1
+	input from 1: previous
+RELU mask_relu_fcn1
+	input from 1: previous
+CONV mask_fcn2 size: 3 3 256 256 hasBias: 1 stride: 1 1 pad: 1 1 1 1
+	input from 1: previous
+RELU mask_relu_fcn2
+	input from 1: previous
+CONV mask_fcn3 size: 3 3 256 256 hasBias: 1 stride: 1 1 pad: 1 1 1 1
+	input from 1: previous
+RELU mask_relu_fcn3
+	input from 1: previous
+CONV mask_fcn4 size: 3 3 256 256 hasBias: 1 stride: 1 1 pad: 1 1 1 1
+	input from 1: previous
+RELU mask_relu_fcn4
+	input from 1: previous
+CONVTRANS mask_conv5 size: 2 2 256 256 hasBias: 1 upsample: 2 2 crop: 0 0 0 0
+	input from 1: previous
+RELU mask_relu_conv5
+	input from 1: previous
+CONV mask_fcn_logits size: 1 1 256 81 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: previous
+SIGMOID mask_sigmoid
+	input from 1: previous
+COPYOUTPUT mask_segmentation
+	input from 1: previous

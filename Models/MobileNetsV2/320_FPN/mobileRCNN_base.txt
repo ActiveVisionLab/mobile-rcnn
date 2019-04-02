@@ -1,0 +1,276 @@
+IMAGEINPUT data size: 640 480 3 1 clipRect: 0 0 0 0
+	input from 0
+CONV stage1_convbn_conv0 size: 3 3 3 32 hasBias: 1 stride: 2 2 pad: 1 1 1 1
+	input from 1: data
+RELU6 stage1_convbn_relu0
+	input from 1: previous
+CONV stage1_ir0_conv0 size: 1 1 32 32 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: stage1_convbn_relu0
+RELU6 stage1_ir0_relu0
+	input from 1: previous
+CONVDEPTHWISE stage1_ir0_conv1 size: 3 3 32 32 hasBias: 1 stride: 1 1 pad: 1 1 1 1
+	input from 1: previous
+RELU6 stage1_ir0_relu1
+	input from 1: previous
+CONV stage1_ir0_conv2 size: 1 1 32 16 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: previous
+CONV stage2_ir0_conv0 size: 1 1 16 96 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: stage1_ir0_conv2
+RELU6 stage2_ir0_relu0
+	input from 1: previous
+CONVDEPTHWISE stage2_ir0_conv1 size: 3 3 96 96 hasBias: 1 stride: 2 2 pad: 1 1 1 1
+	input from 1: previous
+RELU6 stage2_ir0_relu1
+	input from 1: previous
+CONV stage2_ir0_conv2 size: 1 1 96 24 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: previous
+CONV stage2_ir1_conv0 size: 1 1 24 144 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: stage2_ir0_conv2
+RELU6 stage2_ir1_relu0
+	input from 1: previous
+CONVDEPTHWISE stage2_ir1_conv1 size: 3 3 144 144 hasBias: 1 stride: 1 1 pad: 1 1 1 1
+	input from 1: previous
+RELU6 stage2_ir1_relu1
+	input from 1: previous
+CONV stage2_ir1_conv2 size: 1 1 144 24 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: previous
+SUM stage2_ir1_sum
+	input from 2: stage2_ir0_conv2 stage2_ir1_conv2
+CONV stage3_ir0_conv0 size: 1 1 24 144 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: stage2_ir1_sum
+RELU6 stage3_ir0_relu0
+	input from 1: previous
+CONVDEPTHWISE stage3_ir0_conv1 size: 3 3 144 144 hasBias: 1 stride: 2 2 pad: 1 1 1 1
+	input from 1: previous
+RELU6 stage3_ir0_relu1
+	input from 1: previous
+CONV stage3_ir0_conv2 size: 1 1 144 32 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: previous
+CONV stage3_ir1_conv0 size: 1 1 32 192 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: stage3_ir0_conv2
+RELU6 stage3_ir1_relu0
+	input from 1: previous
+CONVDEPTHWISE stage3_ir1_conv1 size: 3 3 192 192 hasBias: 1 stride: 1 1 pad: 1 1 1 1
+	input from 1: previous
+RELU6 stage3_ir1_relu1
+	input from 1: previous
+CONV stage3_ir1_conv2 size: 1 1 192 32 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: previous
+SUM stage3_ir1_sum
+	input from 2: stage3_ir0_conv2 stage3_ir1_conv2
+CONV stage3_ir2_conv0 size: 1 1 32 192 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: stage3_ir1_sum
+RELU6 stage3_ir2_relu0
+	input from 1: previous
+CONVDEPTHWISE stage3_ir2_conv1 size: 3 3 192 192 hasBias: 1 stride: 1 1 pad: 1 1 1 1
+	input from 1: previous
+RELU6 stage3_ir2_relu1
+	input from 1: previous
+CONV stage3_ir2_conv2 size: 1 1 192 32 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: previous
+SUM stage3_ir2_sum
+	input from 2: stage3_ir1_sum stage3_ir2_conv2
+CONV stage4_ir0_conv0 size: 1 1 32 192 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: stage3_ir2_sum
+RELU6 stage4_ir0_relu0
+	input from 1: previous
+CONVDEPTHWISE stage4_ir0_conv1 size: 3 3 192 192 hasBias: 1 stride: 2 2 pad: 1 1 1 1
+	input from 1: previous
+RELU6 stage4_ir0_relu1
+	input from 1: previous
+CONV stage4_ir0_conv2 size: 1 1 192 64 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: previous
+CONV stage4_ir1_conv0 size: 1 1 64 384 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: stage4_ir0_conv2
+RELU6 stage4_ir1_relu0
+	input from 1: previous
+CONVDEPTHWISE stage4_ir1_conv1 size: 3 3 384 384 hasBias: 1 stride: 1 1 pad: 1 1 1 1
+	input from 1: previous
+RELU6 stage4_ir1_relu1
+	input from 1: previous
+CONV stage4_ir1_conv2 size: 1 1 384 64 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: previous
+SUM stage4_ir1_sum
+	input from 2: stage4_ir0_conv2 stage4_ir1_conv2
+CONV stage4_ir2_conv0 size: 1 1 64 384 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: stage4_ir1_sum
+RELU6 stage4_ir2_relu0
+	input from 1: previous
+CONVDEPTHWISE stage4_ir2_conv1 size: 3 3 384 384 hasBias: 1 stride: 1 1 pad: 1 1 1 1
+	input from 1: previous
+RELU6 stage4_ir2_relu1
+	input from 1: previous
+CONV stage4_ir2_conv2 size: 1 1 384 64 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: previous
+SUM stage4_ir2_sum
+	input from 2: stage4_ir1_sum stage4_ir2_conv2
+CONV stage4_ir3_conv0 size: 1 1 64 384 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: stage4_ir2_sum
+RELU6 stage4_ir3_relu0
+	input from 1: previous
+CONVDEPTHWISE stage4_ir3_conv1 size: 3 3 384 384 hasBias: 1 stride: 1 1 pad: 1 1 1 1
+	input from 1: previous
+RELU6 stage4_ir3_relu1
+	input from 1: previous
+CONV stage4_ir3_conv2 size: 1 1 384 64 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: previous
+SUM stage4_ir3_sum
+	input from 2: stage4_ir2_sum stage4_ir3_conv2
+CONV stage4_ir4_conv0 size: 1 1 64 384 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: stage4_ir3_sum
+RELU6 stage4_ir4_relu0
+	input from 1: previous
+CONVDEPTHWISE stage4_ir4_conv1 size: 3 3 384 384 hasBias: 1 stride: 1 1 pad: 1 1 1 1
+	input from 1: previous
+RELU6 stage4_ir4_relu1
+	input from 1: previous
+CONV stage4_ir4_conv2 size: 1 1 384 96 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: previous
+CONV stage4_ir5_conv0 size: 1 1 96 576 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: stage4_ir4_conv2
+RELU6 stage4_ir5_relu0
+	input from 1: previous
+CONVDEPTHWISE stage4_ir5_conv1 size: 3 3 576 576 hasBias: 1 stride: 1 1 pad: 1 1 1 1
+	input from 1: previous
+RELU6 stage4_ir5_relu1
+	input from 1: previous
+CONV stage4_ir5_conv2 size: 1 1 576 96 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: previous
+SUM stage4_ir5_sum
+	input from 2: stage4_ir4_conv2 stage4_ir5_conv2
+CONV stage4_ir6_conv0 size: 1 1 96 576 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: stage4_ir5_sum
+RELU6 stage4_ir6_relu0
+	input from 1: previous
+CONVDEPTHWISE stage4_ir6_conv1 size: 3 3 576 576 hasBias: 1 stride: 1 1 pad: 1 1 1 1
+	input from 1: previous
+RELU6 stage4_ir6_relu1
+	input from 1: previous
+CONV stage4_ir6_conv2 size: 1 1 576 96 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: previous
+SUM stage4_ir6_sum
+	input from 2: stage4_ir5_sum stage4_ir6_conv2
+CONV stage5_ir0_conv0 size: 1 1 96 576 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: stage4_ir6_sum
+RELU6 stage5_ir0_relu0
+	input from 1: previous
+CONVDEPTHWISE stage5_ir0_conv1 size: 3 3 576 576 hasBias: 1 stride: 2 2 pad: 1 1 1 1
+	input from 1: previous
+RELU6 stage5_ir0_relu1
+	input from 1: previous
+CONV stage5_ir0_conv2 size: 1 1 576 160 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: previous
+CONV stage5_ir1_conv0 size: 1 1 160 960 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: stage5_ir0_conv2
+RELU6 stage5_ir1_relu0
+	input from 1: previous
+CONVDEPTHWISE stage5_ir1_conv1 size: 3 3 960 960 hasBias: 1 stride: 1 1 pad: 1 1 1 1
+	input from 1: previous
+RELU6 stage5_ir1_relu1
+	input from 1: previous
+CONV stage5_ir1_conv2 size: 1 1 960 160 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: previous
+SUM stage5_ir1_sum
+	input from 2: stage5_ir0_conv2 stage5_ir1_conv2
+CONV stage5_ir2_conv0 size: 1 1 160 960 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: stage5_ir1_sum
+RELU6 stage5_ir2_relu0
+	input from 1: previous
+CONVDEPTHWISE stage5_ir2_conv1 size: 3 3 960 960 hasBias: 1 stride: 1 1 pad: 1 1 1 1
+	input from 1: previous
+RELU6 stage5_ir2_relu1
+	input from 1: previous
+CONV stage5_ir2_conv2 size: 1 1 960 160 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: previous
+SUM stage5_ir2_sum
+	input from 2: stage5_ir1_sum stage5_ir2_conv2
+CONV stage5_ir3_conv0 size: 1 1 160 960 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: stage5_ir2_sum
+RELU6 stage5_ir3_relu0
+	input from 1: previous
+CONVDEPTHWISE stage5_ir3_conv1 size: 3 3 960 960 hasBias: 1 stride: 1 1 pad: 1 1 1 1
+	input from 1: previous
+RELU6 stage5_ir3_relu1
+	input from 1: previous
+CONV stage5_ir3_conv2 size: 1 1 960 320 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: previous
+CONV fpn_inner4 size: 1 1 320 128 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: stage5_ir3_conv2
+CONV fpn_layer4 size: 3 3 128 128 hasBias: 1 stride: 1 1 pad: 1 1 1 1
+	input from 1: fpn_inner4
+UPSAMPLE fpn_up3 upsample: 2 2 kernel: 0 0 crop: 0 rect: 0 0 method: nearest
+	input from 1: fpn_inner4
+CONV fpn_inner3 size: 1 1 96 128 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: stage4_ir6_sum
+SUM fpn_sum3
+	input from 2: fpn_up3 fpn_inner3
+CONV fpn_layer3 size: 3 3 128 128 hasBias: 1 stride: 1 1 pad: 1 1 1 1
+	input from 1: fpn_sum3
+UPSAMPLE fpn_up2 upsample: 2 2 kernel: 0 0 crop: 0 rect: 0 0 method: nearest
+	input from 1: fpn_sum3
+CONV fpn_inner2 size: 1 1 32 128 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: stage3_ir2_sum
+SUM fpn_sum2
+	input from 2: fpn_up2 fpn_inner2
+CONV fpn_layer2 size: 3 3 128 128 hasBias: 1 stride: 1 1 pad: 1 1 1 1
+	input from 1: fpn_sum2
+UPSAMPLE fpn_up1 upsample: 2 2 kernel: 0 0 crop: 0 rect: 0 0 method: nearest
+	input from 1: fpn_sum2
+CONV fpn_inner1 size: 1 1 24 128 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: stage2_ir1_sum
+SUM fpn_sum1
+	input from 2: fpn_up1 fpn_inner1
+CONV fpn_layer1 size: 3 3 128 128 hasBias: 1 stride: 1 1 pad: 1 1 1 1
+	input from 1: fpn_sum1
+POOLING fpn_mp size: 1 1 method: max stride: 2 2 pad: 0 0 0 0 remove_extra: 1
+	input from 1: fpn_layer4
+CONV rpm1_conv size: 3 3 128 128 hasBias: 1 stride: 1 1 pad: 1 1 1 1
+	input from 1: fpn_layer1
+RELU rpm1_relu
+	input from 1: previous
+CONV rpm1_cls_logits size: 1 1 128 3 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: rpm1_relu
+SIGMOID rpm1_cls_logits_sm
+	input from 1: previous
+CONV rpm1_bbox_pred size: 1 1 128 12 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: rpm1_relu
+CONV rpm2_conv size: 3 3 128 128 hasBias: 1 stride: 1 1 pad: 1 1 1 1
+	input from 1: fpn_layer2
+RELU rpm2_relu
+	input from 1: previous
+CONV rpm2_cls_logits size: 1 1 128 3 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: rpm2_relu
+SIGMOID rpm2_cls_logits_sm
+	input from 1: previous
+CONV rpm2_bbox_pred size: 1 1 128 12 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: rpm2_relu
+CONV rpm3_conv size: 3 3 128 128 hasBias: 1 stride: 1 1 pad: 1 1 1 1
+	input from 1: fpn_layer3
+RELU rpm3_relu
+	input from 1: previous
+CONV rpm3_cls_logits size: 1 1 128 3 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: rpm3_relu
+SIGMOID rpm3_cls_logits_sm
+	input from 1: previous
+CONV rpm3_bbox_pred size: 1 1 128 12 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: rpm3_relu
+CONV rpm4_conv size: 3 3 128 128 hasBias: 1 stride: 1 1 pad: 1 1 1 1
+	input from 1: fpn_layer4
+RELU rpm4_relu
+	input from 1: previous
+CONV rpm4_cls_logits size: 1 1 128 3 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: rpm4_relu
+SIGMOID rpm4_cls_logits_sm
+	input from 1: previous
+CONV rpm4_bbox_pred size: 1 1 128 12 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: rpm4_relu
+CONV rpm5_conv size: 3 3 128 128 hasBias: 1 stride: 1 1 pad: 1 1 1 1
+	input from 1: fpn_mp
+RELU rpm5_relu
+	input from 1: previous
+CONV rpm5_cls_logits size: 1 1 128 3 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: rpm5_relu
+SIGMOID rpm5_cls_logits_sm
+	input from 1: previous
+CONV rpm5_bbox_pred size: 1 1 128 12 hasBias: 1 stride: 1 1 pad: 0 0 0 0
+	input from 1: rpm5_relu
