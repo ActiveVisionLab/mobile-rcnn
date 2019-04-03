@@ -3,12 +3,12 @@ find_path(LNTLibRedist_ROOT_DIR LNTLib.txt
 
 find_library(LNTLibRedist_LIBRARY_DEBUG
 	NAMES LNTLibRedistd
-	PATHS "${LNTLibRedist_ROOT_DIR}/lib/windows-vc15" "${LNTLibRedist_ROOT_DIR}/lib/linux-cuda9.0" {CMAKE_LIB_PATH}
+	PATHS "${LNTLibRedist_ROOT_DIR}/lib/windows-x64-vc15" "${LNTLibRedist_ROOT_DIR}/lib/linux-x64-cuda9.0" {CMAKE_LIB_PATH}
 )
 
 find_library(LNTLibRedist_LIBRARY_RELEASE
 	NAMES LNTLibRedist
-	PATHS "${LNTLibRedist_ROOT_DIR}/lib/windows-vc15" "${LNTLibRedist_ROOT_DIR}/lib/linux-cuda9.0" {CMAKE_LIB_PATH}
+	PATHS "${LNTLibRedist_ROOT_DIR}/lib/windows-x64-vc15" "${LNTLibRedist_ROOT_DIR}/lib/linux-x64-cuda9.0" {CMAKE_LIB_PATH}
 )
 
 find_path(LNTLibRedist_INCLUDE LNTLibRedist.h

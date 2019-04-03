@@ -2,7 +2,7 @@ TARGET_LINK_LIBRARIES(${targetname} debug "${LNTLibRedist_LIBRARY_DEBUG}")
 TARGET_LINK_LIBRARIES(${targetname} optimized "${LNTLibRedist_LIBRARY_RELEASE}")
 
 IF(MSVC_IDE)
-	FILE(GLOB RUNTIMELIBS "${LNTLibRedist_ROOT_DIR}/bin/windows-vc15/*.dll")
+	FILE(GLOB RUNTIMELIBS "${LNTLibRedist_ROOT_DIR}/bin/windows-x64-vc15/*.dll")
 
 	FOREACH(RUNTIMELIB ${RUNTIMELIBS})
 		ADD_CUSTOM_COMMAND(TARGET ${targetname} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different "${RUNTIMELIB}" "$<TARGET_FILE_DIR:${targetname}>")
