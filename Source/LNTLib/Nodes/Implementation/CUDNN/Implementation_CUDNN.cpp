@@ -47,36 +47,35 @@ void Implementation_CUDNN::Deallocate()
 		LNTcudnnSafeCall(cudnnDestroyTensorDescriptor(this->inputDesc));
 }
 
-void Implementation_CUDNN::ReAllocateOnNewBatchSize()
+void Implementation_CUDNN::ReAllocateOnNewBatchSize(bool descriptorOnly)
 {
-	if (output != NULL && !usingExternalOutput)
-	{
-		TensorInfo outputGeometry = node->OutputGeometry();
+	TensorInfo outputGeometry = node->OutputGeometry();
 
+	if (this->outputDesc != NULL)
+		LNTcudnnSafeCall(cudnnDestroyTensorDescriptor(this->outputDesc));
+
+	LNTcudnnSafeCall(cudnnCreateTensorDescriptor(&this->outputDesc));
+	LNTcudnnSafeCall(cudnnSetTensor4dDescriptor(this->outputDesc, CUDNN_TENSOR_NCHW, CUDNN_DATA_FLOAT,
+		outputGeometry.n, outputGeometry.c, outputGeometry.h, outputGeometry.w));
+
+	if (node->NoInputs() > 0)
+	{
+		if (this->inputDesc != NULL)
+			LNTcudnnSafeCall(cudnnDestroyTensorDescriptor(this->inputDesc));
+
+		TensorInfo *inputGeometries = node->InputGeometries();
+
+		// input descriptor
+		LNTcudnnSafeCall(cudnnCreateTensorDescriptor(&this->inputDesc));
+		LNTcudnnSafeCall(cudnnSetTensor4dDescriptor(this->inputDesc, CUDNN_TENSOR_NCHW, CUDNN_DATA_FLOAT,
+			inputGeometries[0].n, inputGeometries[0].c, inputGeometries[0].h, inputGeometries[0].w));
+	}
+
+	if (output != NULL && !usingExternalOutput && !descriptorOnly)
+	{
 		int newDataSize = outputGeometry.n * outputGeometry.w * outputGeometry.h * outputGeometry.c;
 		if (output->DataSize() != newDataSize) // TODO: this should check individually
-		{
-			LNTcudnnSafeCall(cudnnDestroyTensorDescriptor(this->outputDesc));
-			delete output;
-
-			LNTcudnnSafeCall(cudnnCreateTensorDescriptor(&this->outputDesc));
-			LNTcudnnSafeCall(cudnnSetTensor4dDescriptor(this->outputDesc, CUDNN_TENSOR_NCHW, CUDNN_DATA_FLOAT,
-				outputGeometry.n, outputGeometry.c, outputGeometry.h, outputGeometry.w));
-
 			this->output = new ORUtils::MemoryBlock<float>(outputGeometry.n * outputGeometry.c * outputGeometry.h * outputGeometry.w, MEMORYDEVICE_CUDA);
-
-			if (node->NoInputs() > 0)
-			{
-				LNTcudnnSafeCall(cudnnDestroyTensorDescriptor(this->inputDesc));
-
-				TensorInfo *inputGeometries = node->InputGeometries();
-
-				// input descriptor
-				LNTcudnnSafeCall(cudnnCreateTensorDescriptor(&this->inputDesc));
-				LNTcudnnSafeCall(cudnnSetTensor4dDescriptor(this->inputDesc, CUDNN_TENSOR_NCHW, CUDNN_DATA_FLOAT,
-					inputGeometries[0].n, inputGeometries[0].c, inputGeometries[0].h, inputGeometries[0].w));
-			}
-		}
 	}
 }
 

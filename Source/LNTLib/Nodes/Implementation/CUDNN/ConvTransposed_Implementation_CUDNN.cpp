@@ -79,9 +79,9 @@ void ConvTransposed_Implementation_CUDNN::Allocate(LNTLib::Device *device)
 		this->filterData = new ORUtils::MemoryBlock<float>(params.noOutputs * params.kernelSize.x * params.kernelSize.y * params.kernelSize.z, true, true);
 }
 
-void ConvTransposed_Implementation_CUDNN::ReAllocateOnNewBatchSize()
+void ConvTransposed_Implementation_CUDNN::ReAllocateOnNewBatchSize(bool descriptorOnly)
 {
-	Implementation_CUDNN::ReAllocateOnNewBatchSize();
+	Implementation_CUDNN::ReAllocateOnNewBatchSize(descriptorOnly);
 
 	ConvTransposed::NodeParams params = ((ConvTransposed*)node)->Params();
 

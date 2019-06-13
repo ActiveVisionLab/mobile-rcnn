@@ -98,9 +98,15 @@ void MobileRCNN::DetectionNetwork::NetworkToResult()
 	int batchSizeInEntries_scores = class_prob->OutputGeometry().w * class_prob->OutputGeometry().h * class_prob->OutputGeometry().c;
 	int batchSizeInEntries_bbox_deltas = bbox_deltas->OutputGeometry().w * bbox_deltas->OutputGeometry().h * bbox_deltas->OutputGeometry().c;
 
+	size_t noNodes = nodes.size();
+
 	for (int batchId = 0; batchId < noBatchesLastRun; batchId++)
 	{
 		int currentBatchSize = (noBoxes - currentBoxOffset) < maxBatchSize ? noBoxes - currentBoxOffset : maxBatchSize;
+
+		// sets the batch size to the current batch
+		for (size_t nodeId = 0; nodeId < noNodes; nodeId++)
+			nodes[nodeId]->SetCurrentBatchSize(currentBatchSize);
 
 		class_prob->SetOutput(cls_scores[batchId]);
 		class_prob->Output(&cls_score, Implementation::DHW, currentGlobalOffset_scores);
@@ -286,9 +292,8 @@ void MobileRCNN::BuildAnchors(const Vector2i *gridSizes)
 			float scale = size / stride;
 			float sizeRatio = (stride * stride) / aspectRatio;
 
-			// these below are rounded in the standard mask rcnn implementation
-			float w = sqrtf(sizeRatio);
-			float h = sqrtf(sizeRatio) * aspectRatio;
+			float w = roundf(sqrtf(sizeRatio));
+			float h = roundf(w * aspectRatio);
 
 			float x_ctr = 0.5f * (stride - 1.0f);
 			float y_ctr = 0.5f * (stride - 1.0f);
@@ -510,7 +515,7 @@ int MobileRCNN::NMS(ORUtils::MemoryBlock<Vector4f> *all_boxes_postNMS, ORUtils::
 			float area_intersection = fmaxf(intersection.z - intersection.x + 1.0f, 0.0f) * fmaxf(intersection.w - intersection.y + 1.0f, 0.0f);
 
 			float iou = area_intersection / (area_i + areas[j] - area_intersection);
-			if (iou > nmsThreshold) shouldRemove[j] = 1;
+			if (iou >= nmsThreshold) shouldRemove[j] = 1;
 		}
 	}
 

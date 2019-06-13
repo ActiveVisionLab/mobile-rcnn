@@ -139,36 +139,46 @@ static bool png_readdata(FILE *f, int xsize, int ysize, PNGReaderData & internal
 
 static FormatType pnm_readheader(FILE *f, int *xsize, int *ysize, bool *binary)
 {
-	char tmp[1024];
-	FormatType type = FORMAT_UNKNOWN;
-	int xs = 0, ys = 0, max_i = 0;
-	bool isBinary = true;
+    char tmp[1024];
+    FormatType type = FORMAT_UNKNOWN;
+    int xs = 0, ys = 0, max_i = 0;
+    bool isBinary = true;
 
-	/* read identifier */
-	if (fscanf(f, "%[^ \n\t]", tmp) != 1) return type;
-	if (!strcmp(tmp, pgm_id)) type = MONO_8u;
-	else if (!strcmp(tmp, pgm_ascii_id)) { type = MONO_8u; isBinary = false; }
-	else if (!strcmp(tmp, ppm_id)) type = RGB_8u;
-	else if (!strcmp(tmp, ppm_ascii_id)) { type = RGB_8u; isBinary = false; }
-	else return type;
+    /* read identifier */
+	// if (fscanf(f, "%[^ \n\t]", tmp) != 1) return type;
+    if (fscanf(f, "%s\n", tmp) != 1) return type;
+    if (!strcmp(tmp, pgm_id)) type = MONO_8u;
+    else if (!strcmp(tmp, pgm_ascii_id)) { type = MONO_8u; isBinary = false; }
+    else if (!strcmp(tmp, ppm_id)) type = RGB_8u;
+    else if (!strcmp(tmp, ppm_ascii_id)) { type = RGB_8u; isBinary = false; }
+    else return type;
 
-	/* read size */
-	if (!fscanf(f, "%i", &xs)) return FORMAT_UNKNOWN;
-	if (!fscanf(f, "%i", &ys)) return FORMAT_UNKNOWN;
+    /* skip comments */
+    char ch = getc(f);
+    while (ch == '#')
+    {
+        do { ch = getc(f); } while (ch != '\n');
+        ch = getc(f);
+    }
+    ungetc(ch, f);
+    
+    /* read size */
+    if (!fscanf(f, "%i", &xs)) return FORMAT_UNKNOWN;
+    if (!fscanf(f, "%i", &ys)) return FORMAT_UNKNOWN;
 
-	if (!fscanf(f, "%i", &max_i)) return FORMAT_UNKNOWN;
-	if (max_i < 0) return FORMAT_UNKNOWN;
-	else if (max_i <= (1 << 8)) {}
-	else if ((max_i <= (1 << 15)) && (type == MONO_8u)) type = MONO_16s;
-	else if ((max_i <= (1 << 16)) && (type == MONO_8u)) type = MONO_16u;
-	else return FORMAT_UNKNOWN;
-	fgetc(f);
+    if (!fscanf(f, "%i", &max_i)) return FORMAT_UNKNOWN;
+    if (max_i < 0) return FORMAT_UNKNOWN;
+    else if (max_i <= (1 << 8)) {}
+    else if ((max_i <= (1 << 15)) && (type == MONO_8u)) type = MONO_16s;
+    else if ((max_i <= (1 << 16)) && (type == MONO_8u)) type = MONO_16u;
+    else return FORMAT_UNKNOWN;
+    fgetc(f);
 
-	if (xsize) *xsize = xs;
-	if (ysize) *ysize = ys;
-	if (binary) *binary = isBinary;
+    if (xsize) *xsize = xs;
+    if (ysize) *ysize = ys;
+    if (binary) *binary = isBinary;
 
-	return type;
+    return type;
 }
 
 template<class T>
