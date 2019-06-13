@@ -67,7 +67,7 @@ void Conv_Implementation_CUDNN::Allocate(LNTLib::Device *device)
 			CUDNN_CONVOLUTION_FWD_NO_WORKSPACE, device->TotalWorkspaceSize(), &this->algo));
 	else
 		LNTcudnnSafeCall(cudnnGetConvolutionForwardAlgorithm(device->CUDAHandle(), this->inputDesc, this->filtersDesc, this->convDesc, this->outputDesc,
-			CUDNN_CONVOLUTION_FWD_PREFER_FASTEST, device->TotalWorkspaceSize(), &this->algo));
+			CUDNN_CONVOLUTION_FWD_NO_WORKSPACE, device->TotalWorkspaceSize(), &this->algo));
 
 	// workspace size
 	LNTcudnnSafeCall(cudnnGetConvolutionForwardWorkspaceSize(device->CUDAHandle(), this->inputDesc, this->filtersDesc, this->convDesc, this->outputDesc, this->algo, &this->workspaceSize));
@@ -79,9 +79,9 @@ void Conv_Implementation_CUDNN::Allocate(LNTLib::Device *device)
 		this->filterData = new ORUtils::MemoryBlock<float>(params.noOutputs * params.kernelSize.x * params.kernelSize.y * params.kernelSize.z, true, true);
 }
 
-void Conv_Implementation_CUDNN::ReAllocateOnNewBatchSize()
+void Conv_Implementation_CUDNN::ReAllocateOnNewBatchSize(bool descriptorOnly)
 {
-	Implementation_CUDNN::ReAllocateOnNewBatchSize();
+	Implementation_CUDNN::ReAllocateOnNewBatchSize(descriptorOnly);
 
 	Conv::NodeParams params = ((Conv*)node)->Params();
 
@@ -91,7 +91,7 @@ void Conv_Implementation_CUDNN::ReAllocateOnNewBatchSize()
 			CUDNN_CONVOLUTION_FWD_NO_WORKSPACE, device->TotalWorkspaceSize(), &this->algo));
 	else
 		LNTcudnnSafeCall(cudnnGetConvolutionForwardAlgorithm(device->CUDAHandle(), this->inputDesc, this->filtersDesc, this->convDesc, this->outputDesc,
-			CUDNN_CONVOLUTION_FWD_PREFER_FASTEST, device->TotalWorkspaceSize(), &this->algo));
+			CUDNN_CONVOLUTION_FWD_NO_WORKSPACE, device->TotalWorkspaceSize(), &this->algo));
 
 	// workspace size
 	LNTcudnnSafeCall(cudnnGetConvolutionForwardWorkspaceSize(device->CUDAHandle(), this->inputDesc, this->filtersDesc, this->convDesc, this->outputDesc, this->algo, &this->workspaceSize));

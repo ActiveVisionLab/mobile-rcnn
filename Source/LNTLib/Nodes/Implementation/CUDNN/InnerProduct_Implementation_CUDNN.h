@@ -26,7 +26,7 @@ namespace LNTLib
 
 		void Allocate(LNTLib::Device *device);
 
-		void ReAllocateOnNewBatchSize();
+		void ReAllocateOnNewBatchSize(bool descriptorOnly);
 
 		void Deallocate();
 

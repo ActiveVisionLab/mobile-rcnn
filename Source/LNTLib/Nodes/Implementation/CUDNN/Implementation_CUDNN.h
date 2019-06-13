@@ -17,7 +17,10 @@ namespace LNTLib
 	public:
 		// Brief:
 		//   Calls parent constructor
-		Implementation_CUDNN(Node *node) : Implementation(node) { }
+		Implementation_CUDNN(Node *node) : Implementation(node) { 
+			inputDesc = NULL;
+			outputDesc = NULL;
+		}
 
 		// Brief:
 		//   virtual destructor
@@ -33,7 +36,7 @@ namespace LNTLib
 
 		// Brief:
 		//   Reallocates resources when the batch size is changed
-		void ReAllocateOnNewBatchSize();
+		void ReAllocateOnNewBatchSize(bool descriptorOnly);
 		
 		// Brief:
 		//   Copies the output of the network to the memory.

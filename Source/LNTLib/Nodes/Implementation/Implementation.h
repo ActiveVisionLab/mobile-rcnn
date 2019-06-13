@@ -43,7 +43,7 @@ namespace LNTLib
 
 		// Brief:
 		//   Reallocates resources when the batch size is changed
-		virtual void ReAllocateOnNewBatchSize() = 0;
+		virtual void ReAllocateOnNewBatchSize(bool descriptorOnly) = 0;
 		
 		// Brief:
 		//   Reads weights from input file. Weights are interpreted

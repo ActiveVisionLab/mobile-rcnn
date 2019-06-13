@@ -45,7 +45,7 @@ namespace LNTLib
 			
 			this->outputGeometry.n = noTensorsInBatch;
 			
-			implementation->ReAllocateOnNewBatchSize();
+			implementation->ReAllocateOnNewBatchSize(false);
 		}
 
 		// Brief:
@@ -58,6 +58,8 @@ namespace LNTLib
 				this->inputGeometries[i].n = noTensorsInBatch;
 
 			this->outputGeometry.n = noTensorsInBatch;
+
+			implementation->ReAllocateOnNewBatchSize(true);
 		}
 		
 		// Brief:

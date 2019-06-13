@@ -101,13 +101,8 @@ namespace LNTLib
 		{
 			size_t free, total;
 
-			// allocate half the available memory
-			ORcudaSafeCall(cudaMemGetInfo(&free, &total));
-			totalWorkspaceSize = free / 2;
-			ORcudaSafeCall(cudaMalloc(&workspace, totalWorkspaceSize));
-
-			//workspace = NULL;
-			//totalWorkspaceSize = 0;
+			workspace = NULL;
+			totalWorkspaceSize = 0;
 		}
 #endif
 	};
